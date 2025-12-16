@@ -163,6 +163,16 @@ const IncubadoraProposal = () => {
       ['TOTAL', 'Total estimado (1 ciclo / 9 meses)', '≈ 790k MZN'],
     ];
 
+    const budgetLean = [
+      ['Categoria', 'Descrição', 'Estimativa (MZN)'],
+      ['Coordenação (PT)', 'Coordenação do programa', '≈ 15k/mês × 9 = 135k'],
+      ['Facilitação/Mentoria', 'Bolsa simbólica docentes/alumni', '≈ 30k/mês × 9 = 270k'],
+      ['Internet/Infra', 'Ajustes e consumíveis', '≈ 3k/mês × 9 = 27k'],
+      ['Eventos', 'Hackathons e demo days', '≈ 5k/trimestre × 3 = 15k'],
+      ['Operacional', 'Materiais e comunicação', '≈ 60k'],
+      ['TOTAL', 'Total estimado (1 ciclo / 9 meses)', '≈ 507k MZN'],
+    ];
+
     const coverSection = {
       properties: {},
       children: [
@@ -243,8 +253,8 @@ const IncubadoraProposal = () => {
         'Apoiar a criação/estruturação de 3–5 startups por ciclo (ou encaminhamento para oportunidades).',
         'Estabelecer parcerias estratégicas com 10+ empresas/organizações relevantes.',
       ]),
-      h3('Investimento (cenário enxuto)'),
-      p('Orçamento estimado para 1 ciclo / 9 meses: ≈ 790.000 MZN (com redução possível via parcerias em espécie).'),
+      h3('Investimento (cenários)'),
+      p('Orçamento estimado para 1 ciclo / 9 meses: Cenário Enxuto ≈ 507.000 MZN; Cenário Operacional ≈ 790.000 MZN (com redução possível via parcerias em espécie).'),
 
       h2('2. Contextualização e Justificação'),
       p(
@@ -340,6 +350,10 @@ const IncubadoraProposal = () => {
 
       h2('9. Orçamento Base (baixo custo) e Sustentabilidade'),
       p('Orçamento enxuto orientado ao menor custo possível, com cofinanciamento via parcerias.'),
+      h3('Cenário Enxuto'),
+      makeTable(budgetLean),
+      new Paragraph({ text: '', spacing: { after: 120 } }),
+      h3('Cenário Operacional'),
       makeTable(budget),
       new Paragraph({ text: '', spacing: { after: 120 } }),
       p('Nota: priorizar angariação de fundos através de parcerias e patrocínios; a UTDEG pode cobrir 1 ciclo (9 meses) até autossustentabilidade.'),
@@ -615,8 +629,15 @@ const IncubadoraProposal = () => {
     ]);
 
     // Lean budget table (lowest cost)
-    addH2('11. Orçamento Base (Cenário Enxuto)');
-    addParagraph('Orçamento orientado ao menor custo possível, com foco em bolsas simbólicas e apoio em espécie via parcerias. A universidade pode cobrir 1 ciclo (9 meses) até autossustentabilidade.');
+    addH2('11. Orçamento Base (2 cenários)');
+    addParagraph('Apresentam-se dois cenários para 1 ciclo (9 meses): (i) Cenário Enxuto e (ii) Cenário Operacional. Valores são estimativos e podem ser reduzidos via parcerias em espécie.');
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(12);
+    doc.text('Cenário Enxuto', left, y);
+    y += 6;
+    doc.setFont('helvetica', 'normal');
+
     autoTable(doc, {
       head: [['Categoria', 'Descrição', 'Estimativa (MZN)']],
       body: [
@@ -627,6 +648,30 @@ const IncubadoraProposal = () => {
         ['Operacional', 'Materiais e comunicação', '≈ 60k'],
       ],
       foot: [['Total estimado (1 ciclo / 9 meses)', '', '≈ 507k MZN']],
+      startY: y,
+      styles: { font: 'helvetica', fontSize: 10, cellPadding: 2 },
+      headStyles: { fillColor: [primaryRgb.r, primaryRgb.g, primaryRgb.b], textColor: 255 },
+      footStyles: { fillColor: [secondaryRgb.r, secondaryRgb.g, secondaryRgb.b], textColor: 20, fontStyle: 'bold' },
+      margin: { left, right: 15 },
+    });
+    y = (doc.lastAutoTable?.finalY || y) + 8;
+    ensureSpace(18);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(12);
+    doc.text('Cenário Operacional', left, y);
+    y += 6;
+    doc.setFont('helvetica', 'normal');
+
+    autoTable(doc, {
+      head: [['Categoria', 'Descrição', 'Estimativa (MZN)']],
+      body: [
+        ['Coordenação (PT)', 'Coordenação do programa', '~25k/mês × 9 = 225k'],
+        ['Facilitação/Mentoria', 'Bolsa simbólica para docentes/alumni', '~45k/mês × 9 = 405k'],
+        ['Internet/Infra', 'Ajustes e consumíveis', '~5k/mês × 9 = 45k'],
+        ['Eventos', 'Hackathons, demo days', '~5k/trimestre × 3 = 15k'],
+        ['Operacional', 'Materiais, comunicação', '~100k'],
+      ],
+      foot: [['Total estimado (1 ciclo / 9 meses)', '', '≈ 790k MZN']],
       startY: y,
       styles: { font: 'helvetica', fontSize: 10, cellPadding: 2 },
       headStyles: { fillColor: [primaryRgb.r, primaryRgb.g, primaryRgb.b], textColor: 255 },
@@ -728,7 +773,12 @@ const IncubadoraProposal = () => {
 
           <div>
             <h4 className="font-semibold mb-2">Investimento Requerido</h4>
-            <p className="text-gray-700">Orçamento estimado (cenário enxuto) para 1 ciclo / 9 meses: <span className="font-bold">≈ 790.000 MZN</span></p>
+            <p className="text-gray-700">
+              Orçamento estimado para 1 ciclo / 9 meses:{' '}
+              <span className="font-bold">Cenário Enxuto ≈ 507.000 MZN</span>
+              {' '}e{' '}
+              <span className="font-bold">Cenário Operacional ≈ 790.000 MZN</span>
+            </p>
             <p className="text-sm text-gray-600 mt-1">Retorno esperado através de impacto social, posicionamento institucional e potencial equity em startups graduadas</p>
           </div>
         </div>
@@ -1279,49 +1329,100 @@ const IncubadoraProposal = () => {
               Custos podem ser reduzidos via <strong>apoio em espécie</strong> (hardware, conectividade, créditos cloud, espaços e mentoria corporativa).
             </p>
           </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm border text-gray-800">
-              <thead className="bg-gray-100">
-                <tr>
-                  <th className="border p-2 text-left">Categoria</th>
-                  <th className="border p-2 text-left">Descrição</th>
-                  <th className="border p-2 text-center">Estimativa (MZN)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="border p-2">Coordenação (PT)</td>
-                  <td className="border p-2">Coordenação do programa</td>
-                  <td className="border p-2 text-center">~25k/mês × 9 = 225k</td>
-                </tr>
-                <tr className="bg-gray-50">
-                  <td className="border p-2">Facilitação/Mentoria</td>
-                  <td className="border p-2">Bolsa simbólica para docentes/alumni</td>
-                  <td className="border p-2 text-center">~45k/mês × 9 = 405k</td>
-                </tr>
-                <tr>
-                  <td className="border p-2">Internet/Infra</td>
-                  <td className="border p-2">Ajustes e consumíveis</td>
-                  <td className="border p-2 text-center">~5k/mês × 9 = 45k</td>
-                </tr>
-                <tr className="bg-gray-50">
-                  <td className="border p-2">Eventos</td>
-                  <td className="border p-2">Hackathons, demo days</td>
-                  <td className="border p-2 text-center">~5k/trimestre × 3 = 15k</td>
-                </tr>
-                <tr>
-                  <td className="border p-2">Operacional</td>
-                  <td className="border p-2">Materiais, comunicação</td>
-                  <td className="border p-2 text-center">~100k</td>
-                </tr>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td className="border p-2 font-semibold" colSpan={2}>Total estimado (1 ciclo / 9 meses)</td>
-                  <td className="border p-2 text-center font-bold">≈ 790k MZN</td>
-                </tr>
-              </tfoot>
-            </table>
+          <div>
+            <h5 className="font-semibold mb-2">Cenário Enxuto (≈ 507k MZN)</h5>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm border text-gray-800">
+                <thead className="bg-gray-100">
+                  <tr>
+                    <th className="border p-2 text-left">Categoria</th>
+                    <th className="border p-2 text-left">Descrição</th>
+                    <th className="border p-2 text-center">Estimativa (MZN)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="border p-2">Coordenação (PT)</td>
+                    <td className="border p-2">Coordenação do programa</td>
+                    <td className="border p-2 text-center">≈ 15k/mês × 9 = 135k</td>
+                  </tr>
+                  <tr className="bg-gray-50">
+                    <td className="border p-2">Facilitação/Mentoria</td>
+                    <td className="border p-2">Bolsa simbólica docentes/alumni</td>
+                    <td className="border p-2 text-center">≈ 30k/mês × 9 = 270k</td>
+                  </tr>
+                  <tr>
+                    <td className="border p-2">Internet/Infra</td>
+                    <td className="border p-2">Ajustes e consumíveis</td>
+                    <td className="border p-2 text-center">≈ 3k/mês × 9 = 27k</td>
+                  </tr>
+                  <tr className="bg-gray-50">
+                    <td className="border p-2">Eventos</td>
+                    <td className="border p-2">Hackathons e demo days</td>
+                    <td className="border p-2 text-center">≈ 5k/trimestre × 3 = 15k</td>
+                  </tr>
+                  <tr>
+                    <td className="border p-2">Operacional</td>
+                    <td className="border p-2">Materiais e comunicação</td>
+                    <td className="border p-2 text-center">≈ 60k</td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td className="border p-2 font-semibold" colSpan={2}>Total estimado (1 ciclo / 9 meses)</td>
+                    <td className="border p-2 text-center font-bold">≈ 507k MZN</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+
+          <div>
+            <h5 className="font-semibold mb-2">Cenário Operacional (≈ 790k MZN)</h5>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm border text-gray-800">
+                <thead className="bg-gray-100">
+                  <tr>
+                    <th className="border p-2 text-left">Categoria</th>
+                    <th className="border p-2 text-left">Descrição</th>
+                    <th className="border p-2 text-center">Estimativa (MZN)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="border p-2">Coordenação (PT)</td>
+                    <td className="border p-2">Coordenação do programa</td>
+                    <td className="border p-2 text-center">~25k/mês × 9 = 225k</td>
+                  </tr>
+                  <tr className="bg-gray-50">
+                    <td className="border p-2">Facilitação/Mentoria</td>
+                    <td className="border p-2">Bolsa simbólica para docentes/alumni</td>
+                    <td className="border p-2 text-center">~45k/mês × 9 = 405k</td>
+                  </tr>
+                  <tr>
+                    <td className="border p-2">Internet/Infra</td>
+                    <td className="border p-2">Ajustes e consumíveis</td>
+                    <td className="border p-2 text-center">~5k/mês × 9 = 45k</td>
+                  </tr>
+                  <tr className="bg-gray-50">
+                    <td className="border p-2">Eventos</td>
+                    <td className="border p-2">Hackathons, demo days</td>
+                    <td className="border p-2 text-center">~5k/trimestre × 3 = 15k</td>
+                  </tr>
+                  <tr>
+                    <td className="border p-2">Operacional</td>
+                    <td className="border p-2">Materiais, comunicação</td>
+                    <td className="border p-2 text-center">~100k</td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td className="border p-2 font-semibold" colSpan={2}>Total estimado (1 ciclo / 9 meses)</td>
+                    <td className="border p-2 text-center font-bold">≈ 790k MZN</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
           </div>
           <div className="bg-[#f8a50a]/10 border-l-4 border-[#f8a50a] p-3 text-sm">
             <p><strong>Nota:</strong> Evitar destacar o orçamento. Priorizar angariação de fundos através de parcerias (patrocínios, doações em espécie, bolsas corporativas). A universidade poderá cobrir custos por 1 ciclo (9 meses) enquanto a incubadora caminha para a autossustentabilidade.</p>
